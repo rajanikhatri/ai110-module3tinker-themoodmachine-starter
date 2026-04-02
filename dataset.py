@@ -67,6 +67,29 @@ TRUE_LABELS = [
     "negative",  # "I am not happy about this"
 ]
 
+# Added 8 more posts with varied language styles.
+SAMPLE_POSTS.extend([
+    "Lowkey stressed but kind of proud of myself",      # mixed
+    "I absolutely love getting stuck in traffic",        # sarcasm -> negative
+    "no cap this was the best day ever",                 # slang -> positive
+    "I don't hate it but I don't love it either",        # mixed
+    "feeling so blessed and grateful today :)",          # positive
+    "this is the worst thing that has ever happened",    # negative
+    "meh, just another day I guess",                     # neutral
+    "I am not sad at all, life is good",                 # positive (negation)
+])
+
+TRUE_LABELS.extend([
+    "mixed",
+    "negative",
+    "positive",
+    "mixed",
+    "positive",
+    "negative",
+    "neutral",
+    "positive",
+])
+
 # TODO: Add 5-10 more posts and labels.
 #
 # Requirements:
