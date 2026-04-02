@@ -23,6 +23,15 @@ POSITIVE_WORDS = [
     "chill",
     "relaxed",
     "amazing",
+    "hopeful",
+    "proud",
+    "blessed",
+    "grateful",
+    "best",
+    "immaculate",
+    "😂",
+    "🎉",
+    "😍",
 ]
 
 NEGATIVE_WORDS = [
@@ -36,6 +45,10 @@ NEGATIVE_WORDS = [
     "stressed",
     "hate",
     "boring",
+    "worst",
+    "done",
+    "💀",
+    "🥲",
 ]
 
 # ---------------------------------------------------------------------
@@ -82,13 +95,6 @@ SAMPLE_POSTS.extend([
     "today was okay I guess 🥲",                        # mixed (smiling through sadness)
     "vibes are immaculate today 😍",                    # positive
     "nothing is going right :(",                        # negative
-    "highkey nervous for my presentation but also kinda excited",  # mixed
-    "finally turned in that assignment and I can breathe again 😌", # positive
-    "my roommate kept me up all night so I'm exhausted",            # negative
-    "the quiz was not amazing but not terrible either",             # neutral
-    "lowkey proud of myself even though I totally messed up at first",  # mixed
-    "campus looked so nice today :) honestly boosted my mood",      # positive
-    "idk, today just felt off for some reason",                     # negative
 ])
 
 TRUE_LABELS.extend([
@@ -96,22 +102,6 @@ TRUE_LABELS.extend([
     "negative",
     "positive",
     "mixed",
-    "positive",
-    "negative",
-    "neutral",
-    "positive",
-    "positive",
-    "negative",
-    "mixed",
-    "positive",
-    "negative",
-    "mixed",
-    "positive",
-    "negative",
-    "neutral",
-    "mixed",
-    "positive",
-    "negative",
 ])
 
 # TODO: Add 5-10 more posts and labels.
