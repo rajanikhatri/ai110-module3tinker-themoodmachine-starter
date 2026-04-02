@@ -1,67 +1,45 @@
 # The Mood Machine
 
-The Mood Machine is a simple text classifier that begins with a rule based approach and can optionally be extended with a small machine learning model. It tries to guess whether a short piece of text sounds **positive**, **negative**, **neutral**, or even **mixed** based on patterns in your data.
+## Live Demo
 
-This lab gives you hands on experience with how basic systems work, where they break, and how different modeling choices affect fairness and accuracy. You will edit code, add data, run experiments, and write a short model card reflection.
+https://ai110-module3tinker-themoodmachine-starter-rgdsvmvncm98piorscw.streamlit.app/
 
----
+## Overview
 
-## Repo Structure
+The Mood Machine is a rule-based sentiment analysis app that predicts whether a sentence sounds positive, negative, neutral, or mixed. It uses simple text rules to look for mood signals in words, emojis, and emoticons. I improved the project by cleaning the text more carefully, expanding the word lists, improving emoji handling, and adding support for mixed emotions.
 
-```plaintext
-├── dataset.py         # Starter word lists and example posts (you will expand these)
-├── mood_analyzer.py   # Rule based classifier with TODOs to improve
-├── main.py            # Runs the rule based model and interactive demo
-├── ml_experiments.py  # (New) A tiny ML classifier using scikit-learn
-├── model_card.md      # Template to fill out after experimenting
-└── requirements.txt   # Dependencies for optional ML exploration
-```
+## Features
 
----
+- Rule-based mood prediction
+- Handles emojis and emoticons
+- Supports mixed emotions
+- Interactive Streamlit UI
 
-## Getting Started
+## How It Works
 
-1. Open this folder in VS Code.
-2. Make sure your Python environment is active.
-3. Install dependencies:
+1. The app preprocesses the text by cleaning it, lowering the case, and keeping useful signals like emojis and emoticons.
+2. It scores the sentence using positive and negative word lists, along with simple rules for things like negation.
+3. It compares those signals and predicts one of four labels: positive, negative, neutral, or mixed.
 
-    ```bash
-    pip install -r requirements.txt
-    ```
+## Example Inputs
 
-4. Run the rule-based starter:
+- "I absolutely love getting stuck in traffic"
+- "Feeling tired but kind of hopeful"
+- "just got an A on my exam 😂🎉"
 
-    ```bash
-    python main.py
-    ```
+## Results
 
-If pieces of the analyzer are not implemented yet, you will see helpful errors that guide you to the TODOs.
+The rule-based model reached an accuracy of 0.89, which means it predicted 17 out of 19 examples correctly on this dataset.
 
-To try the ML model later, run:
+The ML model reached an accuracy of 1.00, but it was trained and tested on the same dataset. That means the score looks perfect, but it is not a reliable measure of how well the model would perform on new examples.
 
-```bash
-python ml_experiments.py
-```
+## Limitations
 
----
+- Sarcasm is hard to detect
+- Subtle tone can be misclassified
 
-## What You Will Do
+## Tech Stack
 
-During this lab you will:
-
-- Implement the missing parts of the rule based `MoodAnalyzer`.
-- Add new positive and negative words.
-- Expand the dataset with more posts, including slang, emojis, sarcasm, or mixed emotions.
-- Observe unusual or incorrect predictions and think about why they happen.
-- Train a tiny machine learning model and compare its behavior to your rule based system.
-- Complete the model card with your findings about data, behavior, limitations, and improvements.
-- The goal is to help you reason about how models behave, how data shapes them, and why even small design choices matter.
-
----
-
-## Tips
-
-- Start with preprocessing before updating scoring rules.
-- When debugging, print tokens, scores, or intermediate choices.
-- Ask an AI assistant to help create edge case posts or unusual wording.
-- Try examples that mislead or confuse your model. Failure cases teach you the most.
+- Python
+- Streamlit
+- scikit-learn
