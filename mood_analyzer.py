@@ -54,6 +54,11 @@ class MoodAnalyzer:
         """
         cleaned = text.strip().lower()
         basic_punctuation = ",.!?:;\"()[]{}"
+        known_emoji_tokens = {
+            token
+            for token in self.positive_words.union(self.negative_words)
+            if len(token) == 1 and not token.isalnum() and token != "'"
+        }
 
         for char in basic_punctuation:
             cleaned = cleaned.replace(char, " ")
@@ -65,7 +70,14 @@ class MoodAnalyzer:
             # Keep apostrophes inside words like "don't" but remove them
             # if they appear only at the edges of a token.
             cleaned_token = token.strip("'")
-            if cleaned_token:
+            if not cleaned_token:
+                continue
+
+            # If multiple known emoji are stuck together, split them so
+            # each emoji can be matched separately later.
+            if len(cleaned_token) > 1 and all(char in known_emoji_tokens for char in cleaned_token):
+                tokens.extend(list(cleaned_token))
+            else:
                 tokens.append(cleaned_token)
 
         return tokens
