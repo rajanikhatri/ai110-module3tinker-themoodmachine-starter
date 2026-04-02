@@ -53,7 +53,20 @@ class MoodAnalyzer:
           - Normalize repeated characters ("soooo" -> "soo")
         """
         cleaned = text.strip().lower()
-        tokens = cleaned.split()
+        basic_punctuation = ",.!?:;\"()[]{}"
+
+        for char in basic_punctuation:
+            cleaned = cleaned.replace(char, " ")
+
+        raw_tokens = cleaned.split()
+        tokens = []
+
+        for token in raw_tokens:
+            # Keep apostrophes inside words like "don't" but remove them
+            # if they appear only at the edges of a token.
+            cleaned_token = token.strip("'")
+            if cleaned_token:
+                tokens.append(cleaned_token)
 
         return tokens
 
