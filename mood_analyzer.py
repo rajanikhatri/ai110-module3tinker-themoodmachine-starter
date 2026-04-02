@@ -54,11 +54,15 @@ class MoodAnalyzer:
         """
         cleaned = text.strip().lower()
         basic_punctuation = ",.!?:;\"()[]{}"
+        sad_emoticon_placeholder = "sad_emoticon_token"
         known_emoji_tokens = {
             token
             for token in self.positive_words.union(self.negative_words)
             if len(token) == 1 and not token.isalnum() and token != "'"
         }
+
+        # Protect the sad emoticon so it survives punctuation cleanup.
+        cleaned = cleaned.replace(":(", f" {sad_emoticon_placeholder} ")
 
         for char in basic_punctuation:
             cleaned = cleaned.replace(char, " ")
@@ -71,6 +75,10 @@ class MoodAnalyzer:
             # if they appear only at the edges of a token.
             cleaned_token = token.strip("'")
             if not cleaned_token:
+                continue
+
+            if cleaned_token == sad_emoticon_placeholder:
+                tokens.append(":(")
                 continue
 
             # If multiple known emoji are stuck together, split them so
