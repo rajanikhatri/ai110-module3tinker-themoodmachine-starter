@@ -67,7 +67,7 @@ TRUE_LABELS = [
     "negative",  # "I am not happy about this"
 ]
 
-# Added 8 more posts with varied language styles.
+# Added more posts with varied language styles, slang, emojis, sarcasm, and negation.
 SAMPLE_POSTS.extend([
     "Lowkey stressed but kind of proud of myself",      # mixed
     "I absolutely love getting stuck in traffic",        # sarcasm -> negative
@@ -77,6 +77,11 @@ SAMPLE_POSTS.extend([
     "this is the worst thing that has ever happened",    # negative
     "meh, just another day I guess",                     # neutral
     "I am not sad at all, life is good",                 # positive (negation)
+    "just got an A on my exam 😂🎉",                    # positive
+    "I'm so done with everything 💀",                   # negative (slang: 💀 = exhausted)
+    "today was okay I guess 🥲",                        # mixed (smiling through sadness)
+    "vibes are immaculate today 😍",                    # positive
+    "nothing is going right :(",                        # negative
 ])
 
 TRUE_LABELS.extend([
@@ -88,6 +93,11 @@ TRUE_LABELS.extend([
     "negative",
     "neutral",
     "positive",
+    "positive",
+    "negative",
+    "mixed",
+    "positive",
+    "negative",
 ])
 
 # TODO: Add 5-10 more posts and labels.
