@@ -9,7 +9,7 @@ I built two versions of the system:
 - a rule-based model in `mood_analyzer.py`
 - a simple ML model in `ml_experiments.py`
 
-The main point of the project was to see how mood prediction changes when I adjust the data, the word lists, and the rules.
+The goal of this project was to see how mood prediction changes when I adjust the data, the word lists, and the rules.
 
 ## 2. Intended Use
 
@@ -59,13 +59,13 @@ The rule-based model uses a simple set of steps:
    - `mixed` if it finds both positive and negative signals
    - `neutral` if it finds no sentiment signals
 
-I like this model because it is easy to follow. If it makes a mistake, I can usually see exactly which words or symbols caused it.
+I like this model because it is easy to follow and easy to explain. If it makes a mistake, I can usually see exactly which words or symbols caused it.
 
 ## 5. Evaluation Results
 
 I evaluated the rule-based model on the 19 labeled posts in `dataset.py`.
 
-Current rule-based accuracy:
+Final rule-based accuracy:
 
 - `0.89`
 - `17 out of 19` correct
@@ -96,7 +96,7 @@ Current ML accuracy on the same dataset:
 - `1.00`
 - `19 out of 19` correct
 
-That is higher than the rule-based model, but it is also a little misleading. The ML model is trained and tested on the same 19 posts, so it may be memorizing the training examples instead of learning patterns that would work on new text.
+That is higher than the rule-based model, but this result is also misleading. The ML model is trained and tested on the same 19 posts, so it may be memorizing the training examples instead of learning patterns that would work on new text.
 
 A good example is:
 
@@ -135,7 +135,7 @@ My rule-based model still has a few clear limitations.
 - The dataset is small.
   - With only 19 posts, both the rule-based model and the ML model are easy to overfit.
 
-Some of these are fixable with better rules, but some are deeper limitations of rule-based sentiment analysis. Tone, context, and sarcasm are especially hard to capture with simple word matching.
+Some of these could be improved with better rules, but some are deeper limitations of rule-based sentiment analysis. Tone, context, and sarcasm are especially hard to capture with simple word matching.
 
 ## 8. Ethical Considerations
 
@@ -168,4 +168,4 @@ The biggest things I learned were:
 - rule-based models also break easily on sarcasm, subtle tone, and context
 - high ML accuracy does not always mean the model is truly better
 
-Overall, I learned that evaluating a model is not just about the final accuracy number. It is also about understanding what the model is seeing, where it fails, and why those failures happen.
+Overall, I learned that evaluating a model is not just about the final accuracy number. It is about understanding what the model is actually doing, where it fails, and why those failures happen.
