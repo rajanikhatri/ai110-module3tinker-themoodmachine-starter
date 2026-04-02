@@ -103,6 +103,15 @@ TRUE_LABELS.extend([
     "negative",
     "positive",
     "mixed",
+    "positive",
+    "negative",
+    "neutral",
+    "positive",
+    "positive",
+    "negative",
+    "mixed",
+    "positive",
+    "negative",
 ])
 
 # TODO: Add 5-10 more posts and labels.
