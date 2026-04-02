@@ -1,41 +1,32 @@
 # Model Card: Mood Machine
 
-## 1. Overview of the Mood Machine
+## 1. Overview
 
-The Mood Machine is a small text classification project that tries to guess the mood of a short post or message. It uses four labels:
+The Mood Machine is a small text classification project that predicts the mood of a short message. It uses four labels: `positive`, `negative`, `neutral`, and `mixed`.
 
-- `positive`
-- `negative`
-- `neutral`
-- `mixed`
-
-This project includes two versions of the model:
+I built two versions of the system:
 
 - a rule-based model in `mood_analyzer.py`
-- a simple machine learning model in `ml_experiments.py`
+- a simple ML model in `ml_experiments.py`
 
-The goal of the project was not just to get predictions, but to see how model choices, word lists, and labeled data affect behavior.
+The main point of the project was to see how mood prediction changes when I adjust the data, the word lists, and the rules.
 
 ## 2. Intended Use
 
-This project is meant for learning and experimentation. It is designed for short, casual text like:
+This project is mainly for learning. It works best on short, casual text like student messages, social media-style posts, or quick chat sentences.
 
-- student-style messages
-- social posts
-- quick chat messages
-
-It is not meant for high-stakes use like mental health screening, school discipline, hiring, or anything serious where a wrong label could harm someone.
+It is not meant for serious real-world use. I would not use it for mental health decisions, school discipline, hiring, or anything else where a wrong label could affect someone in an important way.
 
 ## 3. Dataset and Labeling
 
-The dataset lives in `dataset.py`. Right now it has 19 short example posts and 19 matching labels.
+The dataset is stored in `dataset.py`. It currently has 19 labeled posts.
 
-The labels were chosen by reading each post and deciding whether the tone felt mostly positive, negative, neutral, or mixed. Some examples were easy to label, like:
+I labeled each post by reading it and deciding whether the overall tone felt positive, negative, neutral, or mixed. Some examples were straightforward:
 
 - `"I love this class so much"` -> `positive`
 - `"Today was a terrible day"` -> `negative`
 
-Some examples were harder and more subjective, like:
+Some were more subjective:
 
 - `"I don't hate it but I don't love it either"` -> `mixed`
 - `"today was okay I guess 🥲"` -> `mixed`
@@ -43,33 +34,32 @@ Some examples were harder and more subjective, like:
 
 I tried to make the dataset feel realistic by including:
 
-- slang: `"lowkey"`, `"no cap"`
-- emojis: `"😂"`, `"🎉"`, `"😍"`, `"💀"`, `"🥲"`
-- emoticons: `":("`
-- negation: `"I am not happy about this"`
-- sarcasm: `"I absolutely love getting stuck in traffic"`
-- mixed emotions: `"Feeling tired but kind of hopeful"`
+- slang like `"lowkey"` and `"no cap"`
+- emoji like `"😂"`, `"🎉"`, `"😍"`, `"💀"`, and `"🥲"`
+- the emoticon `":("`
+- negation like `"I am not happy about this"`
+- sarcasm like `"I absolutely love getting stuck in traffic"`
+- mixed feelings like `"Feeling tired but kind of hopeful"`
 
-This dataset is still very small, so it is useful for learning, but not enough to build a reliable real-world model.
+The dataset is still very small, so it is useful for learning, but not enough to say the model would work well in the real world.
 
 ## 4. How the Rule-Based Model Works
 
-The rule-based model is in `mood_analyzer.py`.
+The rule-based model uses a simple set of steps:
 
-It works in a few simple steps:
-
-1. It preprocesses the text by lowercasing it, removing basic punctuation, keeping apostrophes in words like `"don't"`, and splitting the text into tokens.
-2. It preserves some useful emotion signals during preprocessing, like the sad emoticon `":("`.
-3. It can also split combined emoji like `"😂🎉"` into separate tokens so each emoji can be checked.
-4. It compares each token to hand-written `POSITIVE_WORDS` and `NEGATIVE_WORDS` from `dataset.py`.
-5. It uses a simple negation rule. If the previous token is something like `not` or `don't`, it flips the meaning of the next sentiment word.
-6. It returns:
+1. It preprocesses the text by lowercasing it, removing basic punctuation, and splitting it into tokens.
+2. It keeps apostrophes inside words like `"don't"`.
+3. It preserves the sad emoticon `":("` so it does not get lost during preprocessing.
+4. It splits combined emoji like `"😂🎉"` into separate tokens.
+5. It checks each token against `POSITIVE_WORDS` and `NEGATIVE_WORDS` from `dataset.py`.
+6. It uses a simple negation rule. If a word like `not` or `don't` comes right before a sentiment word, the meaning gets flipped.
+7. It returns:
    - `positive` if it finds only positive signals
    - `negative` if it finds only negative signals
-   - `mixed` if it finds at least one positive and one negative signal
+   - `mixed` if it finds both positive and negative signals
    - `neutral` if it finds no sentiment signals
 
-This makes the model easy to understand because I can trace why it made a decision.
+I like this model because it is easy to follow. If it makes a mistake, I can usually see exactly which words or symbols caused it.
 
 ## 5. Evaluation Results
 
@@ -80,7 +70,7 @@ Current rule-based accuracy:
 - `0.89`
 - `17 out of 19` correct
 
-Examples it gets right:
+Some examples it gets right:
 
 - `"Feeling tired but kind of hopeful"` -> `mixed`
 - `"I am not sad at all, life is good"` -> `positive`
@@ -88,103 +78,94 @@ Examples it gets right:
 - `"I'm so done with everything 💀"` -> `negative`
 - `"nothing is going right :("` -> `negative`
 
-Main observations:
-
-- The model improved a lot after I expanded the word lists.
-- Adding support for `mixed` helped with examples that had both positive and negative signals.
-- Improving preprocessing also helped because emoji and `:(` were being lost before.
+These results improved after I expanded the word lists, improved preprocessing, added emoji handling, and supported the `mixed` label.
 
 The two examples it still gets wrong are:
 
 - `"I absolutely love getting stuck in traffic"` -> predicted `positive`, true `negative`
 - `"today was okay I guess 🥲"` -> predicted `negative`, true `mixed`
 
-These mistakes show that the model still struggles with sarcasm and subtle tone.
+Those two mistakes show that the model still struggles when tone is indirect or hard to read.
 
-## 6. Comparison With the ML Model
+## 6. Comparison with ML Model
 
-The ML model in `ml_experiments.py` uses `CountVectorizer` and `LogisticRegression`.
+The ML model uses `CountVectorizer` and `LogisticRegression`.
 
-Current ML accuracy on the same 19 posts:
+Current ML accuracy on the same dataset:
 
 - `1.00`
 - `19 out of 19` correct
 
-At first, this looks better than the rule-based model. But there is an important catch: the ML model is trained and tested on the same small dataset.
-
-So the ML model may be doing so well because it has basically learned the exact examples it already saw.
+That is higher than the rule-based model, but it is also a little misleading. The ML model is trained and tested on the same 19 posts, so it may be memorizing the training examples instead of learning patterns that would work on new text.
 
 A good example is:
 
 - `"I absolutely love getting stuck in traffic"`
 
 The rule-based model predicts `positive` because it sees the word `"love"`.
-The ML model predicts `negative`, probably because that exact labeled example was part of the training data.
+The ML model predicts `negative`, which matches the label, but that may be because it already saw that exact sentence during training.
 
 Another example is:
 
 - `"today was okay I guess 🥲"`
 
-The rule-based model predicts `negative` because it notices the negative emoji.
-The ML model predicts `mixed`, which matches the label better on this dataset.
+The rule-based model predicts `negative` because it treats `🥲` as a negative signal.
+The ML model predicts `mixed`, which matches the label on this dataset.
 
-So the ML model performs better here, but the score is probably too optimistic because the evaluation is not on new data.
+So the ML model looks better in accuracy, but the result is probably too optimistic because the evaluation is not on new examples.
 
-## 7. Known Limitations
+## 7. Limitations
 
-My current rule-based model still has some clear limitations.
+My rule-based model still has a few clear limitations.
 
-- **Sarcasm is hard to detect.**
+- It struggles with sarcasm.
   - Example: `"I absolutely love getting stuck in traffic"`
-  - The model sees `"love"` and treats it as positive.
+  - The model sees `"love"` and misses the sarcastic meaning.
 
-- **Subtle tone is hard to capture.**
+- It struggles with subtle tone.
   - Example: `"today was okay I guess 🥲"`
-  - A person might read this as mixed or uncertain, but the model leans negative.
+  - A person might read that as mixed, but the model leans negative.
 
-- **The model depends on exact words and symbols.**
-  - If I do not put a word or emoji in the word list, the model may miss it completely.
+- It depends heavily on exact words and symbols.
+  - If a useful word or emoji is not in the word list, the model may miss the mood completely.
 
-- **The negation rule is simple.**
-  - It only checks the word right before a sentiment word, so more complex phrasing can still confuse it.
+- The negation rule is simple.
+  - It only works when the negation word comes right before the sentiment word.
 
-- **The dataset is tiny.**
-  - With only 19 examples, both models are easy to overfit and hard to trust on new text.
+- The dataset is small.
+  - With only 19 posts, both the rule-based model and the ML model are easy to overfit.
 
-Some of these are small rule issues, but some are deeper limits of rule-based sentiment analysis. Tone, context, and sarcasm are especially hard to solve with simple word matching.
+Some of these are fixable with better rules, but some are deeper limitations of rule-based sentiment analysis. Tone, context, and sarcasm are especially hard to capture with simple word matching.
 
-## 8. Ethical Considerations and Bias
+## 8. Ethical Considerations
 
-Even though this is a classroom project, there are still important ethical issues to think about.
+Even though this is a class project, there are still some important ethical issues to think about.
 
-- **Bias in language coverage**
-  - The dataset is small and mostly written in one casual English style.
-  - It does not represent many dialects, communities, or ways of expressing emotion.
+- The dataset is small and limited.
+  - It does not represent all ways people speak, joke, or express emotion.
 
-- **Slang can be misunderstood**
-  - Some slang changes meaning depending on context, friend group, or community.
-  - A phrase that sounds negative to the model might not actually be negative to a person.
+- Slang and tone can vary by community.
+  - A phrase that sounds negative in one context may mean something different in another.
 
-- **Private messages are sensitive**
-  - Mood analysis on personal writing can feel invasive if people do not know it is happening.
+- Mood prediction can feel invasive.
+  - If this kind of tool were used on private messages without consent, that would be a problem.
 
-- **Wrong labels can matter**
-  - A model that misreads sadness, sarcasm, or distress could give the wrong impression about how someone feels.
+- Wrong labels can matter.
+  - If a model misreads sadness, sarcasm, or frustration, it can give the wrong picture of how someone feels.
 
-- **Overconfidence**
-  - The model always returns one label, even when the text is vague or hard to interpret.
-  - That can make it seem more certain than it really is.
+- The model sounds more confident than it really is.
+  - It always returns one label, even when the text is unclear.
 
-## 9. What I Learned From This Project
+## 9. What I Learned
 
-This project helped me understand that even a small model involves a lot of design choices.
+This project showed me that small design choices can change model behavior a lot.
 
-What I learned most:
+The biggest things I learned were:
 
-- Data matters a lot. Adding better examples and labels changed model behavior quickly.
-- Small preprocessing choices matter. Emoji handling and preserving `:(` changed the predictions.
-- Rule-based systems are easy to understand, which is a big strength.
-- At the same time, rule-based systems miss tone, context, and sarcasm very easily.
-- A higher ML accuracy number does not always mean the model is truly better. If the model is tested on the same data it trained on, the result can be misleading.
+- better data makes a big difference
+- preprocessing matters more than it seems at first
+- rule-based models are easy to explain, which is a real strength
+- rule-based models also break easily on sarcasm, subtle tone, and context
+- high ML accuracy does not always mean the model is truly better
 
-Overall, the biggest lesson was that building a model is not just about getting a number. It is also about understanding why the model behaves the way it does, where it fails, and what those failures mean.
+Overall, I learned that evaluating a model is not just about the final accuracy number. It is also about understanding what the model is seeing, where it fails, and why those failures happen.
